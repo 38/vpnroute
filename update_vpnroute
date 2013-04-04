@@ -1,0 +1,21 @@
+#!/usr/bin/python
+import urllib2
+import os
+def netmask(num):
+	res = 32
+	while num > 1:
+		res -= 1
+		num /= 2
+	return res
+URL="http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest"
+os.system("mv /etc/ppp/vpnroute.d/china.conf /etc/ppp/vpnroute.d/china.conf.bak")
+fp = open("/etc/ppp/vpnroute.d/china.conf","w")
+print >>fp, """#IP addresses located in china
+#This file is generated automatically, any manual modification in this file may be lost."""
+for line in urllib2.urlopen(URL):
+	line = line.strip()
+	if line[0] == "#": continue
+	res = line.split('|')
+	if res[2] == "ipv4" and res[1] == "CN":
+		print>>fp, "%s/%d"%(res[3],netmask(int(res[4])))
+	

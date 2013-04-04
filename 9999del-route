@@ -1,0 +1,20 @@
+#!/bin/bash
+export PATH="/bin:/sbin:/usr/sbin:/usr/bin"
+BLACKLIST="/etc/ppp/vpn_blacklist"
+
+
+if [ ! -e ${BLACKLIST} ]; then
+	exit 0
+fi
+if [ -e /tmp/vpn_route_suffix ]; then
+	SUFFIX=`cat /tmp/vpn_route_suffix`
+else
+	SUFFIX=""
+fi
+
+for ip in `python /etc/ppp/read_vpn_blacklist.py < ${BLACKLIST}`; do
+	ip route del ${ip} ${SUFFIX}
+done
+if [ ! "$1" = "update" ]; then
+	rm /tmp/vpn_route_suffix
+fi
