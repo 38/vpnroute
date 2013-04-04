@@ -15,4 +15,4 @@ install update_vpnroute ${PREFIX}/usr/bin
 install read_vpn_blacklist.py ${PREFIX}/etc/ppp/read_vpn_blacklist.py
 install vpn_blacklist ${PREFIX}/etc/ppp/vpn_blacklist
 install user.conf ${PREFIX}/etc/ppp/vpnroute.d/user.conf
-#update_vpnroute
+update_vpnroute
